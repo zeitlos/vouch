@@ -114,22 +114,23 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 2. **Click** the **"Variables"** tab
 
 **Narration:**
-"Now let's wire the database to our app."
+"Now let's wire the database to our app. Notice that Lucity already created a `DATABASE_URL` shared variable when the database came online — it reads the credentials automatically, no copy-pasting connection strings."
 
-3. **Click** **"Add Variable"**
-4. Type `DATABASE_URL` as the key
-5. For the value, type the PostgreSQL connection string (or paste it from the database panel)
-   - *Tip: you can get the internal DNS from the database panel's connection info*
-6. **Click** **"Add Variable"** again
-7. Type `BOARD_TITLE` as the key, `Acme Roadmap (Development)` as the value
-8. **Click** **"Add Variable"** again
-9. Type `BOARD_DESCRIPTION` as the key, `Tell us what to build next.` as the value
-10. **Click** **"Save"**
+3. **Click** **"Reference Shared"**
+4. The dropdown shows `DATABASE_URL` — **click** it
+
+> *The variable is added referencing the shared `DATABASE_URL`.*
+
+5. **Click** **"Add Variable"**
+6. Type `BOARD_TITLE` as the key, `Acme Roadmap (Development)` as the value
+7. **Click** **"Add Variable"** again
+8. Type `BOARD_DESCRIPTION` as the key, `Tell us what to build next.` as the value
+9. **Click** **"Save"**
 
 > *A small badge shows the save was successful. The service redeploys with the new variables.*
 
 **Narration:**
-"Three environment variables: the database connection, a custom board title, and a description. These are scoped to the development environment — production will have different values."
+"Three environment variables: the database connection from the dropdown, a custom board title, and a description. These are scoped to the development environment — production will have different values."
 
 ### Scene 8 — The App, Now with a Database
 
@@ -277,12 +278,13 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 ### Scene 15 — Configure Production
 
 1. **Click** the **service node** → **"Variables"** tab
-2. The variables are cloned from development — `DATABASE_URL`, `BOARD_TITLE`, `BOARD_DESCRIPTION`
-3. **Change** `BOARD_TITLE` to `Acme Roadmap` (remove the "(Development)" suffix)
-4. **Click** **"Save"**
+2. The variables are cloned from development — `DATABASE_URL` (via Reference Shared), `BOARD_TITLE`, `BOARD_DESCRIPTION`
+3. Note: the `DATABASE_URL` reference already points to production's shared variable — Lucity auto-created it when the production database came online
+4. **Change** `BOARD_TITLE` to `Acme Roadmap` (remove the "(Development)" suffix)
+5. **Click** **"Save"**
 
 **Narration:**
-"Production gets its own environment variables. The title drops the 'Development' label. Same code, different config — that's how you differentiate environments."
+"Production gets its own environment variables. The database URL was set up automatically — each environment gets its own connection string. The title drops the 'Development' label. Same code, different config — that's how you differentiate environments."
 
 5. **Click** the **"Settings"** tab
 6. In the **Domain** field, type `vouch.acme.com`
@@ -372,7 +374,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 - **Errors**: If anything fails, it's okay. Show the error, explain it, fix it. Real demos build trust.
 - **Browser tabs**: Keep it simple. Dashboard tab + App tab + Terminal. Name them clearly.
 - **Terminal**: Use a clean terminal with a readable font size. No cluttered prompt.
-- **Don't show passwords**: Be careful with DATABASE_URL values. Use generic connection strings or blur if needed.
+- **No credentials on screen**: `DATABASE_URL` is referenced from shared variables, so the actual connection string is never visible during the demo.
 
 ---
 
@@ -381,6 +383,6 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 If the build takes too long or something breaks mid-recording:
 
 - **Build too slow**: Pre-record the build wait and splice it, or narrate over it with an architecture diagram
-- **Database won't connect**: Double-check the connection string format. The internal DNS is `<project>-lucity-app-<dbname>.<namespace>.svc.cluster.local:5432`
+- **Database won't connect**: The `DATABASE_URL` shared variable is created automatically when the database becomes ready. If it's missing, wait a few seconds for the next poll cycle — it should appear in the "Reference Shared" dropdown
 - **Webhook doesn't fire**: Manually trigger a deploy from the dashboard (Deploy button) while explaining the webhook is usually automatic
 - **App shows errors**: Great! Show the logs panel — it's a feature, not a bug. Debug live.
