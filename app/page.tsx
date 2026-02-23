@@ -1,5 +1,5 @@
 import { query } from '@/lib/db';
-import PostCard from '@/components/PostCard';
+import Board from '@/components/Board';
 import NewPostForm from '@/components/NewPostForm';
 
 interface Post {
@@ -51,21 +51,8 @@ export default async function Home() {
             Set the <code className="rounded bg-amber-100 px-1.5 py-0.5 font-mono text-xs">DATABASE_URL</code> environment variable to connect a PostgreSQL database.
           </p>
         </div>
-      ) : posts.length === 0 ? (
-        <div className="rounded-xl border border-gray-200 bg-white p-10 text-center shadow-sm">
-          <p className="text-lg font-medium text-gray-700">
-            No feedback yet
-          </p>
-          <p className="mt-1 text-sm text-gray-400">
-            Be the first to submit a feature request!
-          </p>
-        </div>
       ) : (
-        <div className="space-y-3">
-          {posts.map((post) => (
-            <PostCard key={post.id} post={post} />
-          ))}
-        </div>
+        <Board posts={posts} />
       )}
 
       <footer className="mt-12 text-center text-xs text-gray-400">
