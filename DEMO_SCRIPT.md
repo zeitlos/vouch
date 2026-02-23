@@ -61,9 +61,24 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 **Narration:**
 "And we're live. First deploy — zero config. No Dockerfile, no build pipeline to set up, no YAML to write."
 
-### Scene 4 — Visit the App (No Database Yet)
+### Scene 4 — Give It a Domain
 
-> *The service instance now shows a host. Open the app in a new tab.*
+> *The service is deployed but has no public hostname yet. Let's assign one.*
+
+1. **Click** the **service node** on the canvas (if not already open)
+2. **Click** the **"Settings"** tab in the service panel
+3. Scroll to the **"Networking"** section
+4. In the **Domain** field, type `vouch-dev.acme.com` (or whatever domain you have configured)
+5. **Press** Enter
+
+> *The domain appears as a badge. Lucity creates an HTTPRoute for the service.*
+
+**Narration:**
+"The app is deployed, but it needs a hostname to be reachable. One field — type a domain, hit enter. Lucity creates the route using the Kubernetes Gateway API. Standard networking, no proprietary load balancer."
+
+### Scene 5 — Visit the App (No Database Yet)
+
+> *Open the domain you just set in a new browser tab.*
 
 **Narration:**
 "Let's open the app."
@@ -78,7 +93,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 
 ## Act 2: Database & Environment Variables (~2 min)
 
-### Scene 5 — Create a PostgreSQL Database
+### Scene 6 — Create a PostgreSQL Database
 
 1. Switch back to the **Lucity dashboard** tab
 2. **Click** the **"Create"** button (top-right on the canvas, or use the "New" palette)
@@ -93,7 +108,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 **Narration:**
 "One click — we've got a managed PostgreSQL database. CloudNativePG under the hood, fully managed, backups included."
 
-### Scene 6 — Set Environment Variables
+### Scene 7 — Set Environment Variables
 
 1. **Click** the **service node** to re-open the service panel
 2. **Click** the **"Variables"** tab
@@ -116,7 +131,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 **Narration:**
 "Three environment variables: the database connection, a custom board title, and a description. These are scoped to the development environment — production will have different values."
 
-### Scene 7 — The App, Now with a Database
+### Scene 8 — The App, Now with a Database
 
 > *Switch to the app tab. Refresh the page.*
 
@@ -128,7 +143,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 **Narration:**
 "The database connected, the table was created automatically, and our custom title is showing. Let's add some data."
 
-### Scene 8 — Add Feedback Posts
+### Scene 9 — Add Feedback Posts
 
 1. **Click** **"Submit Feedback"**
 2. Type title: `Dark mode support`
@@ -157,7 +172,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 
 ## Act 3: Database Console (~1 min)
 
-### Scene 9 — Browse the Table
+### Scene 10 — Browse the Table
 
 1. Switch back to the **Lucity dashboard**
 2. **Click** the **database node** on the canvas (blue icon)
@@ -186,31 +201,9 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 
 ---
 
-## Act 4: Custom Domain (~30 sec)
+## Act 4: CI/CD Flow (~2 min)
 
-### Scene 11 — Set a Domain
-
-1. **Click** the **service node** to open the service panel
-2. **Click** the **"Settings"** tab
-3. Scroll to the **"Networking"** section
-4. In the **Domain** field, type `feedback-dev.acme.com`
-5. **Press** Enter
-
-> *The domain appears as a badge. A small confirmation shows.*
-
-**Narration:**
-"Custom domains are just a hostname. Lucity creates the HTTPRoute using the Gateway API — standard Kubernetes networking, no proprietary load balancer."
-
-> *Briefly show the private networking DNS name below — the internal service URL.*
-
-**Narration:**
-"You also get internal DNS for service-to-service communication."
-
----
-
-## Act 5: CI/CD Flow (~2 min)
-
-### Scene 12 — Push a Code Change
+### Scene 11 — Push a Code Change
 
 **Narration:**
 "Now let's see the CI/CD flow. I want to add a filter bar so users can filter posts by status. I've got that ready in a branch — let me merge it."
@@ -228,7 +221,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 **Narration:**
 "One merge, one push. Lucity watches the repo for changes."
 
-### Scene 13 — Watch the Auto-Deploy
+### Scene 12 — Watch the Auto-Deploy
 
 1. Switch back to the **Lucity dashboard**
 2. **Click** the **service node** → **Deployments** tab
@@ -248,7 +241,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 **Narration:**
 "Both deploys are in the history. You can roll back to any previous version with one click."
 
-### Scene 14 — See the Change Live
+### Scene 13 — See the Change Live
 
 > *Switch to the app tab. Refresh.*
 
@@ -263,9 +256,9 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 
 ---
 
-## Act 6: Environment Promotion (~2 min)
+## Act 5: Environment Promotion (~2 min)
 
-### Scene 15 — Create a Production Environment
+### Scene 14 — Create a Production Environment
 
 1. Switch back to the **Lucity dashboard**
 2. **Click** the **Environment Switcher** in the breadcrumb (shows "development ▼")
@@ -281,7 +274,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 **Narration:**
 "We just created a production environment, cloned from development. Same service config, same database setup. But production gets its own namespace, its own resources."
 
-### Scene 16 — Set Production Variables
+### Scene 15 — Configure Production
 
 1. **Click** the **service node** → **"Variables"** tab
 2. The variables are cloned from development — `DATABASE_URL`, `BOARD_TITLE`, `BOARD_DESCRIPTION`
@@ -289,9 +282,16 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 4. **Click** **"Save"**
 
 **Narration:**
-"Production gets its own environment variables. Same DATABASE_URL structure pointing to the production database, but the title drops the 'Development' label. This is how you differentiate environments — same code, different config."
+"Production gets its own environment variables. The title drops the 'Development' label. Same code, different config — that's how you differentiate environments."
 
-### Scene 17 — Promote
+5. **Click** the **"Settings"** tab
+6. In the **Domain** field, type `vouch.acme.com`
+7. **Press** Enter
+
+**Narration:**
+"And production gets its own domain."
+
+### Scene 16 — Promote
 
 1. **Click** the **Deployments** tab
 2. The production environment hasn't deployed yet (or shows the initial cloned image)
@@ -313,7 +313,7 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 **Narration:**
 "Promotion copies the image tag — it doesn't rebuild. The exact same artifact that was tested in development is now running in production. No 'works on my machine' surprises."
 
-### Scene 18 — Production App
+### Scene 17 — Production App
 
 > *Open the production URL in a new tab (or navigate to the production domain).*
 
@@ -327,16 +327,16 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 
 ---
 
-## Act 7: Closing (~30 sec)
+## Act 6: Closing (~30 sec)
 
-### Scene 19 — The Canvas Overview
+### Scene 18 — The Canvas Overview
 
 > *Switch back to the dashboard. Show the project canvas with both the service node and database node. Switch between environments in the breadcrumb to show they're independent.*
 
 **Narration:**
 "That's Lucity. We went from a GitHub repo to a fully deployed application with a managed database, environment variables, custom domains, CI/CD, and production promotion — in under ten minutes."
 
-### Scene 20 — The Ejectability Tease
+### Scene 19 — The Ejectability Tease
 
 **Narration:**
 "And here's the thing that makes Lucity different from Railway or Render: everything you just saw is standard Kubernetes under the hood. Helm charts, ArgoCD, Gateway API, CloudNativePG. If you ever outgrow the platform, run `lucity eject` and you get the raw infrastructure-as-code. No lock-in, no migration headaches. Your infrastructure is always yours."
@@ -354,13 +354,12 @@ A complete recording script for showcasing Lucity using the Vouch feedback board
 
 | Act | Duration | Content |
 |-----|----------|---------|
-| 1 — First Deploy | ~2:00 | Create project, watch build, see empty app |
+| 1 — First Deploy | ~2:30 | Create project, watch build, set domain, visit app |
 | 2 — Database & Vars | ~2:00 | Create DB, set env vars, add data |
 | 3 — DB Console | ~1:00 | Browse table, run query |
-| 4 — Custom Domain | ~0:30 | Set domain, show networking |
-| 5 — CI/CD | ~2:00 | Push code, watch auto-deploy, see change |
-| 6 — Promotion | ~2:00 | Create prod env, set vars, promote, verify |
-| 7 — Closing | ~0:30 | Canvas overview, ejectability pitch |
+| 4 — CI/CD | ~2:00 | Push code, watch auto-deploy, see change |
+| 5 — Promotion | ~2:00 | Create prod env, set vars, set domain, promote, verify |
+| 6 — Closing | ~0:30 | Canvas overview, ejectability pitch |
 | **Total** | **~10:00** | |
 
 ---
