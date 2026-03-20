@@ -10,7 +10,7 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: process.env.BOARD_TITLE || 'Vouch',
   description:
-    process.env.BOARD_DESCRIPTION || 'Share feedback, vote on features.',
+    process.env.BOARD_DESCRIPTION || 'Share feedback, vote on what matters.',
 };
 
 export default function RootLayout({
