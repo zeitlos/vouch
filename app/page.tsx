@@ -11,7 +11,7 @@ interface Post {
   created_at: string;
 }
 
-const boardTitle = process.env.BOARD_TITLE || 'Vouch';
+const boardTitle = process.env.BOARD_TITLE || 'Vouch is Nice!!';
 const boardDescription =
   process.env.BOARD_DESCRIPTION || 'Share feedback, vote on features.';
 
