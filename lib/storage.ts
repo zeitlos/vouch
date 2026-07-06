@@ -19,7 +19,10 @@ const bucket = process.env.S3_BUCKET;
 const accessKeyId = process.env.S3_ACCESS_KEY_ID;
 const secretAccessKey = process.env.S3_SECRET_ACCESS_KEY;
 const endpoint = process.env.S3_ENDPOINT; // optional (omit for real AWS S3)
-const region = process.env.S3_REGION || 'us-east-1';
+// Some S3-compatible stores (e.g. OVH) report an upper-case region, but SigV4
+// requires the region in the credential scope to match exactly, so normalize
+// it. AWS regions are already lower-case, so this is a no-op there.
+const region = (process.env.S3_REGION || 'us-east-1').toLowerCase();
 // Most S3-compatible stores (MinIO, Lucity, etc.) need path-style addressing.
 const forcePathStyle = process.env.S3_FORCE_PATH_STYLE !== 'false';
 
