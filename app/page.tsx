@@ -1,4 +1,5 @@
 import { query } from '@/lib/db';
+import { isStorageConfigured } from '@/lib/storage';
 import PostCard from '@/components/PostCard';
 import NewPostForm from '@/components/NewPostForm';
 
@@ -9,6 +10,7 @@ interface Post {
   votes: number;
   status: string;
   created_at: string;
+  image_key: string | null;
 }
 
 const boardTitle = process.env.BOARD_TITLE || 'Vouch is Nice!!';
@@ -39,7 +41,7 @@ export default async function Home() {
       </header>
 
       <div className="mb-6">
-        <NewPostForm />
+        <NewPostForm uploadsEnabled={isStorageConfigured()} />
       </div>
 
       {dbError ? (

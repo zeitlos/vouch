@@ -8,6 +8,7 @@ interface Post {
   votes: number;
   status: string;
   created_at: string;
+  image_key: string | null;
 }
 
 function timeAgo(date: string): string {
@@ -34,6 +35,14 @@ export default function PostCard({ post }: { post: Post }) {
           <p className="mt-1.5 text-sm leading-relaxed text-gray-600">
             {post.description}
           </p>
+        )}
+        {post.image_key && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={`/api/images/${post.image_key}`}
+            alt={post.title}
+            className="mt-3 max-h-72 w-full rounded-lg border border-gray-100 object-cover"
+          />
         )}
         <p className="mt-2 text-xs text-gray-400">
           {timeAgo(post.created_at)}

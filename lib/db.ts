@@ -20,6 +20,9 @@ async function ensureTable() {
     )
   `);
 
+  // Added after the initial schema; safe to run on existing tables.
+  await pool.query('ALTER TABLE posts ADD COLUMN IF NOT EXISTS image_key TEXT');
+
   initialized = true;
 }
 

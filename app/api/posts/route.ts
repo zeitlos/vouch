@@ -9,7 +9,7 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
-  const { title, description } = await request.json();
+  const { title, description, image_key } = await request.json();
 
   if (!title || title.trim().length === 0) {
     return NextResponse.json(
@@ -18,9 +18,16 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Only accept keys this app generated, so a post can't reference arbitrary
+  // objects in the bucket.
+  const imageKey =
+    typeof image_key === 'string' && image_key.startsWith('uploads/')
+      ? image_key
+      : null;
+
   const [post] = await query(
-    'INSERT INTO posts (title, description) VALUES ($1, $2) RETURNING *',
-    [title.trim(), description?.trim() || null]
+    'INSERT INTO posts (title, description, image_key) VALUES ($1, $2, $3) RETURNING *',
+    [title.trim(), description?.trim() || null, imageKey]
   );
 
   return NextResponse.json(post, { status: 201 });
