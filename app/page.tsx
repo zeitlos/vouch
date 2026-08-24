@@ -13,7 +13,7 @@ interface Post {
   image_key: string | null;
 }
 
-const boardTitle = process.env.BOARD_TITLE || 'Vouch is Nice!!';
+const boardTitle = process.env.BOARD_TITLE || 'Vouch';
 const boardDescription =
   process.env.BOARD_DESCRIPTION || 'Share feedback, vote on features.';
 
